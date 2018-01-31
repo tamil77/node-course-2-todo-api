@@ -56,7 +56,7 @@ describe('POST /todos', () => {
 
 describe('POST /users', () => {
   it('should create a user with valid email', (done) => {
-    var email = 'tamil@multco.us';
+    var email = 'email@email.us';
 
     request(app)
       .post('/users')
