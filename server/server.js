@@ -14,17 +14,24 @@ app.post('/todos', (req, res) => {
     text: req.body.text
   });
 
-  todo.save().then((doc) => {
-    res.send(doc);
-  }, (err) => {
-    res.status(400).send(err);
-  });
+  if (!isNaN(todo.text)){
+    res.status(400).send('Invalid Todo');
+  }
+  else {
+    todo.save().then((doc) => {
+      res.send(doc);
+
+    }, (err) => {
+      res.status(400).send(err);
+    });
+  }
 });
 
 app.listen(3000, () => {
   console.log('Started on port 3000');
 });
 
+module.exports = {app};
 // var newTodo = new Todo({
 //   text: 'Cook dinner'
 // });
