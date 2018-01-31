@@ -3,9 +3,11 @@ const request = require('supertest');
 
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
+const {User} = require('./../models/user');
 
 beforeEach((done) => {
   Todo.remove({}).then(() => done());
+  User.remove({}).then(() => done());
 });
 
 describe('POST /todos', () => {
@@ -50,4 +52,29 @@ describe('POST /todos', () => {
         }).catch((e) => done(e));
       })
   });
+});
+
+describe('POST /users', () => {
+  it('should create a user with valid email', (done) => {
+    var email = 'tamil@multco.us';
+
+    request(app)
+      .post('/users')
+      .send({email})
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.email).toContain('@');
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        User.find().then((users) => {
+          expect(users.length).toBe(1);
+          done();
+        }).catch((e) => done(e));
+      })
+  });
+
 });
